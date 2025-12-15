@@ -3,5 +3,11 @@ name = "onebrc"
 version = "0.1.0"
 edition = "2024"
 
+[profile.release]
+lto = "fat"
+panic = "abort"
+debug = true
+force-frame-pointers = true
+traget-cpu = "native"
+
 [dependencies]
-tokio = { version = "1.40", features = ["full"] }
