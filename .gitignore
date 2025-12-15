@@ -47,3 +47,10 @@ out/
 /*.out
 out_expected.txt
 /*-timing.json
+/.direnv
+.pre-commit-config.yaml
+
+
+# Added by cargo
+
+/target
