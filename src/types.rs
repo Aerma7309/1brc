@@ -8,18 +8,6 @@ pub struct TemperatureEntry {
     pub count: u64,
 }
 
-impl Default for TemperatureEntry {
-    fn default() -> Self {
-        Self {
-            city_name: Default::default(),
-            temperature: Default::default(),
-            min_temperature: Default::default(),
-            max_temperature: Default::default(),
-            count: Default::default(),
-        }
-    }
-}
-
 impl FromStr for TemperatureEntry {
     type Err = ();
 
