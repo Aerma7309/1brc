@@ -1,5 +1,5 @@
 use std::{
-    collections::{self, BTreeMap, HashMap},
+    collections::{BTreeMap, HashMap},
     fs::File,
     io::{BufRead, BufReader, Write},
 };
@@ -21,12 +21,16 @@ fn main() {
     loop {
         let cr = buf_reader.read_until(b'\n', &mut buf).unwrap();
         if cr != 0 {
-            line = String::from_utf8(buf[..cr - 1].to_vec()).unwrap();
+            line = unsafe { String::from_utf8_unchecked(buf[..cr - 1].to_vec()) };
             buf.clear();
             let city_temp: TemperatureEntry = line.parse().expect("Failed to parse line");
-            resp.entry(city_temp.city_name.clone())
-                .and_modify(|oct| *oct = oct.clone() + &city_temp)
-                .or_insert(city_temp);
+            let curr_city_temp = match resp.get_mut(&city_temp.city_name) {
+                Some(curr_city_temp) => curr_city_temp,
+                None => resp
+                    .entry(city_temp.city_name.clone())
+                    .or_insert_with(|| city_temp.clone()),
+            };
+            *curr_city_temp = city_temp + curr_city_temp;
         } else {
             break;
         }
