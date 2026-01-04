@@ -1,5 +1,5 @@
 use std::{
-    collections::BTreeMap,
+    collections::{self, BTreeMap, HashMap},
     fs::File,
     io::{BufRead, BufReader, Write},
 };
@@ -9,7 +9,7 @@ use crate::types::TemperatureEntry;
 mod types;
 
 fn main() {
-    let mut resp: BTreeMap<String, TemperatureEntry> = BTreeMap::new();
+    let mut resp: HashMap<String, TemperatureEntry> = HashMap::new();
 
     let filename = "measurements.txt";
     let mut buf = vec![];
@@ -35,7 +35,8 @@ fn main() {
     let mut writer = File::create(outfile).expect("Failed to create file");
     writer.write_all(b"{").expect("Failed to write to file");
     let mut first = true;
-    for (_, val) in resp.iter() {
+    let final_resp: BTreeMap<String, TemperatureEntry> = BTreeMap::from_iter(resp);
+    for (_, val) in final_resp.iter() {
         if !first {
             writer.write_all(b", ").expect("Failed to write to file");
         }
